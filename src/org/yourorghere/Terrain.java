@@ -44,7 +44,7 @@ public class Terrain {
     private double DV;
     private double DT;
     private int DA;
-
+    
     public double max;
     public double min;
 
@@ -78,10 +78,9 @@ public class Terrain {
     }
 
     public double getHeight(Vector3 vec) {
-        Vector3 pos = new Vector3((float) (vec.x + width * step * 0.5 - positionX), vec.y, (float) (vec.z + length * step * 0.5 - positionZ));
-        int i = (pos.x >= 0) ? (int) ((pos.x % (step * width)) / step) : width + (int) ((pos.x % (step * width)) / step);
-        int j = (pos.z >= 0) ? (int) ((pos.z % (step * length)) / step) : length + (int) ((pos.z % (step * length)) / step);
-        return height[(i + arrayPositionX) % width][(j + arrayPositionZ) % length];
+        int i = (vec.x >= 0) ? (int) ((vec.x % (step * width)) / step) : width + (int) ((vec.x % (step * width)) / step);
+        int j = (vec.z >= 0) ? (int) ((vec.z % (step * length)) / step) : length + (int) ((vec.z % (step * length)) / step);
+        return height[i][j];
     }
 
     private void vertexMapInitialization() {
@@ -171,9 +170,9 @@ public class Terrain {
         }
     }
 
-    public void dispose(Vector3 focus) {
-        double dx = focus.x - positionX;
-        double dz = focus.z - positionZ;
+    public void dispose() {
+        double dx = MainCamera.position.x - positionX;
+        double dz = MainCamera.position.z - positionZ;
         if (dx > recountDistance || dx < -recountDistance || dz > recountDistance || dz < -recountDistance) {
             double dpw, dpl, dtw, dtl;
             int coeff;
@@ -234,53 +233,44 @@ public class Terrain {
                     c3 *= c3;
                     c4 = (height[riftX[inci]][riftZ[incj]] - min) / (max - min);
                     c4 *= c4;
-                    
-//                    gl.glBegin(GL.GL_LINE_LOOP);
                     gl.glColor3d(c1, c1, c1);
                     //gl.glColor3d(c1, 0, 0);
                     gl.glTexCoord2d(textureX[i][j], textureY[i][j]);
                     gl.glVertex3d(vertexX[i][j], height[riftX[i]][riftZ[j]], vertexZ[i][j]);
-                    
                     gl.glColor3d(c2, c2, c2);
                     //gl.glColor3d(c2, 0, 0);
                     gl.glTexCoord2d(textureX[inci][j], textureY[inci][j]);
                     gl.glVertex3d(vertexX[inci][j], height[riftX[inci]][riftZ[j]], vertexZ[inci][j]);
-                   
                     gl.glColor3d(c3, c3, c3);
                     //gl.glColor3d(c3, 0, 0);
                     gl.glTexCoord2d(textureX[i][incj], textureY[i][incj]);
-                    gl.glVertex3d(vertexX[i][incj], height[riftX[i]][riftZ[incj]], vertexZ[i][incj]);    
-//                    gl.glEnd();
-                    
-//                    gl.glBegin(GL.GL_LINE_LOOP);
+                    gl.glVertex3d(vertexX[i][incj], height[riftX[i]][riftZ[incj]], vertexZ[i][incj]);                  
                     gl.glColor3d(c4, c4, c4);
                     //gl.glColor3d(c4, 0, 0);
                     gl.glTexCoord2d(textureX[inci][incj], textureY[inci][incj]);
                     gl.glVertex3d(vertexX[inci][incj], height[riftX[inci]][riftZ[incj]], vertexZ[inci][incj]);
-                   
                     gl.glColor3d(c3, c3, c3);
                     //gl.glColor3d(c3, 0, 0);
                     gl.glTexCoord2d(textureX[i][incj], textureY[i][incj]);
                     gl.glVertex3d(vertexX[i][incj], height[riftX[i]][riftZ[incj]], vertexZ[i][incj]);
-                    
                     gl.glColor3d(c2, c2, c2);
                     //gl.glColor3d(c2, 0, 0);
                     gl.glTexCoord2d(textureX[inci][j], textureY[inci][j]);
                     gl.glVertex3d(vertexX[inci][j], height[riftX[inci]][riftZ[j]], vertexZ[inci][j]);
-//                     gl.glEnd();
                     incj++;
                 }
                 incj = 1;
                 inci++;
             }
             gl.glEnd();
-//            Vector3 vec = new Vector3((float) (heli.position.x + width * step * 0.5 - positionX), heli.position.y, (float) (heli.position.z + length * step * 0.5 - positionZ));
-//            float h = (float) getHeight(vec);
+//            float i = (float) (heli.position.x % (step * width));
+//            float j = (float) (heli.position.z % (step * length));
+//            float h = (float) getHeight(heli.position);
 //            gl.glBegin(GL.GL_QUADS);
-//            gl.glVertex3f(5f + heli.position.x, h, 5f + heli.position.z);
-//            gl.glVertex3f(5f + heli.position.x, h, -5f + heli.position.z);
-//            gl.glVertex3f(-5f + heli.position.x, h, -5f + heli.position.z);
-//            gl.glVertex3f(-5f + heli.position.x, h, 5f + heli.position.z);
+//            gl.glVertex3f(5f + i, h, 5f + j);
+//            gl.glVertex3f(5f + i, h, -5f + j);
+//            gl.glVertex3f(-5f + i, h, -5f + j);
+//            gl.glVertex3f(-5f + i, h, 5f + j);
 //            gl.glEnd();
         } else {
             gl.glColor3d(0.5, 0.5, 0.5);
