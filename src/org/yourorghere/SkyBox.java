@@ -33,23 +33,6 @@ public class SkyBox {
         gl.glColor3d(1, 1, 1);
         gl.glBindTexture(GL.GL_TEXTURE_2D, texture.getTextureObject());
         gl.glBegin(GL.GL_QUADS);
-        /*
-        // Левая грань (отрицательные x)
-        gl.glVertex3f(x[1], y[1], z[1]);
-        gl.glVertex3f(x[2], y[2], z[2]);
-        gl.glVertex3f(x[5], y[5], z[5]);
-        gl.glVertex3f(x[6], y[6], z[6]);
-        // Передняя грань (отрицательные z)
-        gl.glVertex3f(x[2], y[2], z[2]);
-        gl.glVertex3f(x[3], y[3], z[3]);
-        gl.glVertex3f(x[6], y[6], z[6]);
-        gl.glVertex3f(x[7], y[7], z[7]);
-        // Правая грань (положительные x)
-        gl.glVertex3f(x[1], y[1], z[1]);
-        gl.glVertex3f(x[2], y[2], z[2]);
-        gl.glVertex3f(x[5], y[5], z[5]);
-        gl.glVertex3f(x[6], y[6], z[6]);
-        */
         // Левая грань
         gl.glTexCoord2f(.2505f, .334f);
         gl.glVertex3f(-radius, radius, -radius);        

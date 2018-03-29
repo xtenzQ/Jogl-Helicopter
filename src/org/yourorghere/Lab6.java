@@ -1,6 +1,7 @@
 package org.yourorghere;
 
 import com.sun.opengl.util.Animator;
+import com.sun.opengl.util.GLUT;
 import java.awt.Frame;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
@@ -129,6 +130,7 @@ public class Lab6 implements GLEventListener {
     }
 
     public void display(GLAutoDrawable drawable) {
+        heli.collision((float) terrain.getHeight(heli.position));
         Controller.controll();
         GL gl = drawable.getGL();
 
@@ -146,7 +148,7 @@ public class Lab6 implements GLEventListener {
         gl.glTranslated(-MainCamera.position.x, -MainCamera.position.y, -MainCamera.position.z);
 
         terrain.draw(gl);
-        terrain.dispose();
+        terrain.dispose((Controller.spectator) ? MainCamera.position : heli.position);
 
         forest.drawForest(gl);
 

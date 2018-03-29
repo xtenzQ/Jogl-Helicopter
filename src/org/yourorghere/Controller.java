@@ -12,6 +12,8 @@ import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
+import static org.yourorghere.Helicopter.pull;
+import static org.yourorghere.Helicopter.pullAngle;
 import static org.yourorghere.Lab6.heli;
 
 /**
@@ -34,8 +36,8 @@ public class Controller implements KeyListener, MouseListener, MouseMotionListen
 
     private static float distance = 30;
 
-    private static float pull = (float) 0.1;
-    private static float pullAngle = (float) 0.3;
+    private static final float pull = (float) 0.1;
+    private static final float pullAngle = (float) 0.3;
 
     public Controller() {
     }
@@ -81,24 +83,26 @@ public class Controller implements KeyListener, MouseListener, MouseMotionListen
             angle = toRadian * heli.angles.y;
             sin = Math.sin(angle);
             cos = Math.cos(angle);
-            MainCamera.position.x = heli.position.x - (float) (sin) * distance;
-            MainCamera.position.y = heli.position.y + 15;
-            MainCamera.position.z = heli.position.z - (float) (cos) * distance;
-            MainCamera.angles.x = - 20;
-            MainCamera.angles.y = heli.angles.y + 180;
-//            double cosX = Math.cos(MainCamera.angles.x * toRadian + Math.PI);
-//            double sinX = Math.sin(MainCamera.angles.x * toRadian + Math.PI);
-//            double cosY = Math.cos(MainCamera.angles.y * toRadian + Math.PI);
-//            double sinY = Math.sin(MainCamera.angles.y * toRadian + Math.PI);
-//            MainCamera.position.x = heli.position.x + (float) (distance * sinX * cosY);
-//            MainCamera.position.y = heli.position.y + (float) (distance * cosX);
-//            MainCamera.position.z = heli.position.z + (float) (distance * sinX * sinY);
+//            MainCamera.position.x = heli.position.x - (float) (sin) * distance;
+//            MainCamera.position.y = heli.position.y + 15;
+//            MainCamera.position.z = heli.position.z - (float) (cos) * distance;
+//            MainCamera.angles.x = - 20;
+//            MainCamera.angles.y = heli.angles.y + 180;
+            double cosX = Math.cos(-MainCamera.angles.x * toRadian + Math.PI * 0.5);
+            double sinX = Math.sin(-MainCamera.angles.x * toRadian + Math.PI * 0.5);
+            double cosY = Math.cos(-MainCamera.angles.y * toRadian - Math.PI * 0.5);
+            double sinY = Math.sin(-MainCamera.angles.y * toRadian - Math.PI * 0.5);
+            MainCamera.position.x = heli.position.x - (float) (distance * sinX * cosY);
+            MainCamera.position.y = heli.position.y - (float) (distance * cosX);
+            MainCamera.position.z = heli.position.z - (float) (distance * sinX * sinY);
 
             Vector3 direction = new Vector3(0, 0, 0);
 
+            // Рыскание вправо
             if (yawRight) {
                 heli.accelAngle.y = -(float) pullAngle;
             }
+            // Рыскание влево
             if (yawLeft) {
                 heli.accelAngle.y = (float) pullAngle;
             }
@@ -198,6 +202,7 @@ public class Controller implements KeyListener, MouseListener, MouseMotionListen
         if (keyCode == KeyEvent.VK_E) {
             rollRight = false;
         }
+        // Режим наблюдателя / посадка в вёртолёт
         if (keyCode == KeyEvent.VK_F) {
             spectator = !spectator;
         }
@@ -230,7 +235,16 @@ public class Controller implements KeyListener, MouseListener, MouseMotionListen
         mousePreviousY = e.getY();
     }
 
+    /**
+     * Событие вращения колесика мыши, отвечающее за приближение / отдаление камеры
+     * @param e Событие колесика мыши
+     */
     public void mouseWheelMoved(MouseWheelEvent e) {
+        if (e.getWheelRotation() > 0) {
+            distance++;
+        } else {
+            distance--;
+        }
     }
 
 }
