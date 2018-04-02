@@ -5,7 +5,10 @@
 ## Contents
 1. [Before we start](#before-we-start)
 2. [IDEs and plugins used](#ides-and-plugins-used)
-3. [References](#references)
+3. [Main classes](#main-classes)
+    - [Helicopter](#helicopter)
+    - [Main procedure of controller class](#main-procedure-of-controller-class)
+4. [References](#references)
 
 ## Before we start
 
